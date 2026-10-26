@@ -1,0 +1,41 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "N.E.K.O: check dsh_compat",
+      "type": "shell",
+      "command": "uv run neko-plugin check dsh_compat",
+      "options": {
+        "cwd": "${config:nekoPlugin.repoRoot}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "N.E.K.O: sync dsh_compat",
+      "type": "shell",
+      "command": "uv run neko-plugin sync dsh_compat --clean",
+      "options": {
+        "cwd": "${config:nekoPlugin.repoRoot}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "N.E.K.O: check -r dsh_compat",
+      "type": "shell",
+      "command": "uv run neko-plugin check -r dsh_compat",
+      "options": {
+        "cwd": "${config:nekoPlugin.repoRoot}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "N.E.K.O: build dsh_compat",
+      "type": "shell",
+      "command": "uv run neko-plugin build dsh_compat",
+      "options": {
+        "cwd": "${config:nekoPlugin.repoRoot}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

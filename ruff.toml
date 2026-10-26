@@ -1,0 +1,10 @@
+target-version = "py311"
+line-length = 120
+extend-exclude = ["vendor", "tests", "docs"]
+
+[lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM", "C4"]
+ignore = ["E501", "B008", "UP035"]
+
+[lint.per-file-ignores]
+"__init__.py" = ["E402", "F401"]
