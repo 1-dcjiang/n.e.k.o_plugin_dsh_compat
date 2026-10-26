@@ -195,13 +195,13 @@ def scan_archive_for_skills(tarball: str, want_name: str = "") -> list[dict]:
                     "flat": False,
                 })
             elif base.endswith(".md") and os.path.dirname(member.name).count("/") <= 1:
-                # 扁平 <name>.md（仅浅层，排除深层文档；无 frontmatter name 的会被下方跳过）
-                nm = normalize_skill_name(os.path.splitext(base)[0])
+                # 扁平 <name>.md（仅浅层，排除深层文档；必须有 frontmatter name 才收录）
                 f = tf.extractfile(member)
                 text = f.read().decode("utf-8", errors="ignore") if f else ""
                 parsed = parse_skill_md(text)
-                if parsed["name"]:
-                    nm = parsed["name"]
+                if not parsed["name"]:
+                    continue
+                nm = parsed["name"]
                 if want_name and normalize_skill_name(want_name) != nm:
                     continue
                 found.append({
@@ -510,7 +510,7 @@ class DshCompatPlugin(NekoPluginBase):
                         f"包内未找到技能 '{want_name}'。先不带 skill_name 安装，查看包内全部技能名。"
                     )
                 for item in found:
-                    dest_dir = os.path.join(skills_dir, item["name"])
+                    dest_dir = os.path.join(skills_dir, normalize_skill_name(item["name"]))
                     os.makedirs(dest_dir, exist_ok=True)
                     if item["flat"]:
                         # 扁平 <name>.md → 落 SKILL.md

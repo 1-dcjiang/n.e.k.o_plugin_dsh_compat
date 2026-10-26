@@ -93,6 +93,30 @@ def test_scan_archive_flat_and_dir():
         assert "flat-skill" in names
 
 
+def test_scan_archive_ignores_readme_and_deep_docs():
+    with tempfile.TemporaryDirectory() as td:
+        tgz = os.path.join(td, "pkg.tgz")
+        with tarfile.open(tgz, "w:gz") as tf:
+            # README.md（无 frontmatter）不应被扫为技能
+            data = "# README\n说明文字".encode("utf-8")
+            info = tarfile.TarInfo("pkg/README.md")
+            info.size = len(data)
+            tf.addfile(info, __import__("io").BytesIO(data))
+            # 深层文档（两层以上目录）不应被扫
+            data2 = b"---\nname: deep-doc\ndescription: d\n---\nx"
+            info2 = tarfile.TarInfo("pkg/docs/sub/deep.md")
+            info2.size = len(data2)
+            tf.addfile(info2, __import__("io").BytesIO(data2))
+            # 合法扁平技能仍被扫
+            data3 = b"---\nname: good.md\ndescription: g\n---\ny"
+            info3 = tarfile.TarInfo("pkg/good.md")
+            info3.size = len(data3)
+            tf.addfile(info3, __import__("io").BytesIO(data3))
+        found = scan_archive_for_skills(tgz)
+        names = {f["name"] for f in found}
+        assert names == {"good.md"}
+
+
 def test_scan_archive_want_name():
     with tempfile.TemporaryDirectory() as td:
         tgz = os.path.join(td, "pkg.tgz")
