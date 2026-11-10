@@ -15,4 +15,3 @@ build/
 store.db
 .env
 .DS_Store
-.github/

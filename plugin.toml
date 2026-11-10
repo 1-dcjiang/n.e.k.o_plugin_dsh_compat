@@ -18,7 +18,6 @@ supported = ">=0.1.0,<0.3.0"
 [plugin_runtime]
 enabled = true
 auto_start = true
-timeout = 10
 
 [plugin.store]
 enabled = true

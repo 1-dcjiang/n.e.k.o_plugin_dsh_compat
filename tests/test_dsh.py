@@ -1,10 +1,19 @@
-"""dsh_compat 单元测试：frontmatter 解析 / 名称规范化 / 审计 / 包扫描 / 插件识别。"""
+"""dsh_compat 单元测试：frontmatter 解析 / 名称规范化 / 审计 / 包扫描 / 插件识别。
+
+离线设计：直接导入纯标准库模块 ``_audit_core``，不经过 ``plugin.plugins.dsh_compat``
+包（该装配层在宿主外无法 import plugin.sdk）。在宿主源码仓内 `uv run pytest` 亦可运行。
+"""
 import json
 import os
+import sys
 import tarfile
 import tempfile
+from pathlib import Path
 
-from plugin.plugins.dsh_compat import (
+# 把插件根加入 sys.path，使 ``_audit_core`` 可独立导入
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from _audit_core import (  # noqa: E402
     audit_skill_files,
     inspect_dsh_plugin,
     normalize_skill_name,
