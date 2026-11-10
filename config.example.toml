@@ -1,0 +1,14 @@
+# dsh_compat 配置示例：运行时按需复制修改。
+# 约定：本文件禁止出现 [plugin] 段；插件元数据（id/entry/version 等）一律以 plugin.toml 为准。
+
+[plugin_runtime]
+enabled = true
+auto_start = true
+# 单次工具调用超时（秒），合法范围 1–300；缺省 10
+timeout = 10
+
+[dsh_compat]
+# 安装包大小上限（字节），默认 200 MiB
+max_package_bytes = 209715200
+# 压缩包条目数上限，默认 5000，超限中止解压
+max_archive_entries = 5000
